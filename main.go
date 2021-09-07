@@ -23,15 +23,23 @@ func main() {
 
 	remoteUrl := fmt.Sprintf("https://%s:%s@hub-cloud.browserstack.com/wd/hub", browserstackUsername, browserstackAccessKey)
 
+	// device:https://www.browserstack.com/list-of-browsers-and-platforms/automate
 	// https://www.browserstack.com/automate/capabilities
+	// https://www.browserstack.com/docs/automate/selenium/select-browsers-and-devices#selenium-capabilities
 	//	"browserstack.local": "true",
 	caps := selenium.Capabilities{
-		"project":        "auto-test",
-		"browserName":    "firefox",
-		"browserVersion": "88.0",
-		"os":             "Windows",
-		"os_version":     "8.1",
+		"build":   "auto-test",
+		"project": "auto-test",
+		// "browserstack.debug":  "true",
+		// "browserstack.local":  "true",
+		// "browserstack.tunnel": "true",
+		"browserName":        "firefox",
+		"browserVersion":     "88.0",
+		"os":                 "Windows",
+		"os_version":         "8.1",
+		"browserstack.hosts": "212.129.252.74 airdb.io",
 	}
+
 	wd, err := selenium.NewRemote(caps, remoteUrl)
 	if err != nil {
 		panic(err)
