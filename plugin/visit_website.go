@@ -8,6 +8,6 @@ import (
 
 func Visit(wd selenium.WebDriver, url string) {
 	log.Println("start visit website...")
-	wd.Get("https://www.baidu.com")
+	wd.Get(url)
 	log.Println("visit website finished!")
 }
