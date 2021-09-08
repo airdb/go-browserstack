@@ -20,6 +20,7 @@ func main() {
 	browserstackUsername := os.Getenv("BROWSERSTACK_USERNAME")
 	browserstackAccessKey := os.Getenv("BROWSERSTACK_ACCESS_KEY")
 	browserstackURL := os.Getenv("BROWSERSTACK_URL")
+	browserstackHosts := os.Getenv("BROWSERSTACK_HOSTS")
 
 	remoteUrl := fmt.Sprintf("https://%s:%s@hub-cloud.browserstack.com/wd/hub", browserstackUsername, browserstackAccessKey)
 
@@ -29,6 +30,7 @@ func main() {
 	//	"browserstack.local": "true",
 	caps := selenium.Capabilities{
 		"build":   "auto-test",
+		"name":    "Windows testing",
 		"project": "auto-test",
 		// "browserstack.debug":  "true",
 		// "browserstack.local":  "true",
@@ -37,7 +39,7 @@ func main() {
 		"browserVersion":     "88.0",
 		"os":                 "Windows",
 		"os_version":         "8.1",
-		"browserstack.hosts": "212.129.252.74 airdb.io",
+		"browserstack.hosts": browserstackHosts,
 	}
 
 	wd, err := selenium.NewRemote(caps, remoteUrl)
@@ -46,5 +48,5 @@ func main() {
 	}
 	defer wd.Quit()
 
-	plugin.Visit(wd, browserstackURL)
+	plugin.VisitLocal(wd, browserstackURL)
 }
