@@ -1,4 +1,4 @@
-package plugin
+package vendors
 
 const (
 	BrowserNameAndroid = "Android"
@@ -14,18 +14,21 @@ const (
 	AndroidBrowserVersion11_0 = "11.0"
 )
 
-func GetBrowserAndroid() []string {
-	return []string{
-		AndroidBrowserVersion4_4,
-		AndroidBrowserVersion5_0,
-		AndroidBrowserVersion6_0,
-		AndroidBrowserVersion7_0,
-		AndroidBrowserVersion8_0,
-		AndroidBrowserVersion8_1,
-		AndroidBrowserVersion9_0,
-		AndroidBrowserVersion10_0,
-		AndroidBrowserVersion11_0,
-	}
+var AllAndroidBrowserName = []string{
+	BrowserNameAndroid,
+}
+
+// Define android os version list.
+var AllAndroidOSVersion = []string{
+	AndroidBrowserVersion4_4,
+	AndroidBrowserVersion5_0,
+	AndroidBrowserVersion6_0,
+	AndroidBrowserVersion7_0,
+	AndroidBrowserVersion8_0,
+	AndroidBrowserVersion8_1,
+	AndroidBrowserVersion9_0,
+	AndroidBrowserVersion10_0,
+	AndroidBrowserVersion11_0,
 }
 
 const (
