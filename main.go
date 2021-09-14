@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/airdb/go-browserstack/plugin"
+	"github.com/airdb/go-browserstack/vendors"
 
 	"github.com/joho/godotenv"
 	"github.com/tebeka/selenium"
@@ -29,10 +30,12 @@ func main() {
 	// https://www.browserstack.com/automate/capabilities
 	// https://www.browserstack.com/docs/automate/selenium/select-browsers-and-devices#selenium-capabilities
 
-	browserName := "firefox"
-	browserVersion := "88.0"
-	os := "Windows"
-	osVersion := "8.1"
+	os := vendors.OSWindows
+	osVersion := vendors.OSWindowsVersion8_1
+
+	browserName := vendors.OSWindowsBrowerFirefox
+	browserVersion := vendors.OSWindowsBrowerFirefoxVersion88_0
+
 	realMobile := "false"
 	device := ""
 
@@ -52,6 +55,15 @@ func main() {
 		"Device":             device,         // for mobile
 	}
 
+	/*
+		capList := vendors.GetCapList()
+		log.Println(len(capList))
+		for _, cap := range capList {
+			log.Println("cap: ", cap)
+		}
+
+		return
+	*/
 	wd, err := selenium.NewRemote(caps, remoteUrl)
 	if err != nil {
 		panic(err)
