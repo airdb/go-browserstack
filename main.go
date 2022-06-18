@@ -7,7 +7,6 @@ import (
 
 	"github.com/airdb/go-browserstack/plugin"
 	"github.com/airdb/go-browserstack/vendors"
-
 	"github.com/joho/godotenv"
 	"github.com/tebeka/selenium"
 )
@@ -21,62 +20,30 @@ func main() {
 	browserstackUsername := os.Getenv("BROWSERSTACK_USERNAME")
 	browserstackAccessKey := os.Getenv("BROWSERSTACK_ACCESS_KEY")
 	browserstackURL := os.Getenv("BROWSERSTACK_URL")
-	browserstackHosts := os.Getenv("BROWSERSTACK_HOSTS")
-	browserstackRunLocal := os.Getenv("BROWSERSTACK_RUN_LOCAL")
 
 	remoteUrl := fmt.Sprintf("https://%s:%s@hub-cloud.browserstack.com/wd/hub", browserstackUsername, browserstackAccessKey)
 
-	// device:https://www.browserstack.com/list-of-browsers-and-platforms/automate
-	// https://www.browserstack.com/automate/capabilities
-	// https://www.browserstack.com/docs/automate/selenium/select-browsers-and-devices#selenium-capabilities
-
-	os := vendors.OSWindows
-	osVersion := vendors.OSWindowsVersion8_1
-
-	browserName := vendors.OSWindowsBrowerFirefox
-	browserVersion := vendors.OSWindowsBrowerFirefoxVersion88_0
-
-	realMobile := "false"
-	device := ""
-
-	caps := selenium.Capabilities{
-		"build":              "auto-test",
-		"name":               "send testing",
-		"project":            "auto-test",
-		"browserstack.local": browserstackRunLocal,
-		// "browserstack.debug":  "true",
-		// "browserstack.tunnel": "true",
-		"browserstack.hosts": browserstackHosts,
-		"browserName":        browserName,    // for pc
-		"browserVersion":     browserVersion, // for pc
-		"os":                 os,             // for pc
-		"os_version":         osVersion,      // for pc and mobile
-		"RealMobile":         realMobile,     // for mobile
-		"Device":             device,         // for mobile
-	}
-
-	/*
-		capList := vendors.GetCapList()
-		log.Println(len(capList))
-		for _, cap := range capList {
-			log.Println("cap: ", cap)
+	capList := vendors.GetCapList()
+	for _, cap := range capList {
+		log.Println(cap["os"], "/", cap["os_version"], "/", cap["browserName"], "/", cap["browserVersion"])
+		// log.Println(cap["device"], "/", cap["os_version"])
+		wd, err := selenium.NewRemote(cap, remoteUrl)
+		if err != nil {
+			log.Println(err)
+			continue
 		}
+		requestURL := fmt.Sprintf("%s?browser_name=%s&browser_version=%s&os=%s&os_version=%s&real_mobile=%s&device=%s",
+			browserstackURL,
+			cap["browserName"],
+			cap["browserVersion"],
+			cap["os"],
+			cap["os_version"],
+			cap["realMobile"],
+			cap["device"],
+		)
 
-		return
-	*/
-	wd, err := selenium.NewRemote(caps, remoteUrl)
-	if err != nil {
-		panic(err)
+		plugin.VisitLocal(wd, requestURL)
+		wd.Quit()
 	}
-	defer wd.Quit()
 
-	requestURL := fmt.Sprintf("%s?browser_name=%s&browser_version=%s&os=%s&os_version=%s&real_mobile=%s&device=%s", browserstackURL,
-		browserName,
-		browserVersion,
-		os,
-		osVersion,
-		realMobile,
-		device)
-
-	plugin.VisitLocal(wd, requestURL)
 }

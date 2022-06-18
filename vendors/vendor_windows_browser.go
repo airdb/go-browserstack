@@ -1,21 +1,21 @@
 package vendors
 
 const (
-	OSWindows = "Windows"
+	WindowsOs = "Windows"
 
-	OSWindowsVersion8_1 = "8.1"
+	WindowsOsVersion7   = "7"
+	WindowsOsVersion8   = "8"
+	WindowsOsVersion8_1 = "8.1"
+	WindowsOsVersion10  = "10"
+	WindowsOsVersionXP  = "XP"
 )
 
-// Define firefox browser const.
-const (
-	OSWindowsBrowerFirefox = "firefox"
-
-	OSWindowsBrowerFirefoxVersion88_0 = "88.0"
-	OSWindowsBrowerFirefoxVersion32   = 32 + iota
-	OSWindowsBrowerFirefoxVersion33
-	OSWindowsBrowerFirefoxVersion34
-	OSWindowsBrowerFirefoxVersion35
-	OSWindowsBrowerFirefoxVersion36
-	OSWindowsBrowerFirefoxVersion37
-	OSWindowsBrowerFirefoxVersion38
-)
+func GetAllWindowsOSVersion() []string {
+	return []string{
+		WindowsOsVersion7,
+		WindowsOsVersion8,
+		WindowsOsVersion8_1,
+		WindowsOsVersion10,
+		WindowsOsVersionXP,
+	}
+}
