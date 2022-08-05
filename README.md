@@ -12,7 +12,7 @@ Below are five parameters for users to set in .env as their accounts of BrowserS
 * <strong>BROWSERSTACK_ACCESS_KEY</strong>: BrowserStack access key
 * <strong>BROWSERSTACK_URL</strong>: the url address users will visit
 * <strong>BROWSERSTACK_HOSTS</strong>: binding of IP address and DNS
-* <strong>BROWSERSTACK_RUN_LOCAL</strong>: bo0lean value, true if users want to visit interanl network for local teseting.
+* <strong>BROWSERSTACK_RUN_LOCAL</strong>: boolean value, true if users want to visit interanl network for local teseting.
 For the format, please refer to [.env.example](./env.example)
 
 ## Run Locally
