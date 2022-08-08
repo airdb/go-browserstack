@@ -32,17 +32,24 @@ func main() {
 			log.Println(err)
 			continue
 		}
-		requestURL := fmt.Sprintf("%s?browser_name=%s&browser_version=%s&os=%s&os_version=%s&real_mobile=%s&device=%s",
+		requestURL := fmt.Sprintf("%s?browser_name=%s&browser_version=%s&os=%s&os_version=%s",
 			browserstackURL,
 			cap["browserName"],
 			cap["browserVersion"],
 			cap["os"],
 			cap["os_version"],
-			cap["realMobile"],
-			cap["device"],
 		)
 
-		plugin.VisitLocal(wd, requestURL)
+		if _, exist := cap["realMobile"]; exist {
+			requestURL += fmt.Sprintf("&real_mobile=%s", cap["realMobile"])
+		}
+
+		if _, exist := cap["device"]; exist {
+			requestURL += fmt.Sprintf("&device=%s", cap["device"])
+		}
+
+		// plugin.VisitLocal(wd, requestURL)
+		plugin.Visit(wd, requestURL)
 		wd.Quit()
 	}
 

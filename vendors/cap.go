@@ -6,9 +6,6 @@ import (
 	"github.com/tebeka/selenium"
 )
 
-var browserstackHosts = os.Getenv("BROWSERSTACK_HOSTS")
-var browserstackRunLocal = os.Getenv("BROWSERSTACK_RUN_LOCAL")
-
 // https://www.browserstack.com/list-of-browsers-and-platforms/automate
 // device:https://www.browserstack.com/list-of-browsers-and-platforms/automate
 // https://www.browserstack.com/automate/capabilities
@@ -21,10 +18,11 @@ func GetCapList() []selenium.Capabilities {
 	// capList = append(capList, GetIosCapList()...)
 	// return capList
 
-	return GetWindowsCapList()
+	ret := GetWindowsCapList()
 	// return GetMacCapList()
 	// return GetAndroidCapList()
 	// return GetIosCapList()
+	return ret
 }
 
 func GetWindowsCapList() []selenium.Capabilities {
@@ -78,19 +76,26 @@ func GetDesktopCapList(allOSVerion []string, os string) []selenium.Capabilities 
 	return capList
 }
 
-func GetDesktopCapListCore(allOSVersion, allBrowserVersion []string, os, browserName string) []selenium.Capabilities {
+func GetDesktopCapListCore(allOSVersion, allBrowserVersion []string, system, browserName string) []selenium.Capabilities {
 	var capList []selenium.Capabilities
+
 	for _, osVersion := range allOSVersion {
 		for _, browserVersion := range allBrowserVersion {
 			cap := selenium.Capabilities{
-				"build":               os,
-				"name":                "testing",
-				"project":             "auto-test",
-				"browserstack.tunnel": "true",
-				"browserstack.local":  browserstackRunLocal,
-				"browserstack.hosts":  browserstackHosts,
+				"build":   system,
+				"name":    "testing",
+				"project": "auto-test",
 			}
-			cap["os"] = os
+
+			browserstackHosts := os.Getenv("BROWSERSTACK_HOSTS")
+			browserstackRunLocal := os.Getenv("BROWSERSTACK_RUN_LOCAL")
+			if browserstackRunLocal == "true" {
+				cap["browserstack.tunnel"] = "ture"
+				cap["browserstack.local"] = browserstackRunLocal
+				cap["browserstack.host"] = browserstackHosts
+			}
+
+			cap["os"] = system
 			cap["os_version"] = osVersion
 			cap["browserName"] = browserName
 			cap["browserVersion"] = browserVersion
@@ -102,16 +107,23 @@ func GetDesktopCapListCore(allOSVersion, allBrowserVersion []string, os, browser
 
 func GetMobileCaplist(allDevice, allOSVersion []string, browserName, realMobile string) []selenium.Capabilities {
 	var capList []selenium.Capabilities
+
 	for _, device := range allDevice {
 		for _, osVersion := range allOSVersion {
 			cap := selenium.Capabilities{
-				"build":               browserName,
-				"name":                "testing",
-				"project":             "auto-test",
-				"browserstack.tunnel": "true",
-				"browserstack.local":  browserstackRunLocal,
-				"browserstack.hosts":  browserstackHosts,
+				"build":   browserName,
+				"name":    "testing",
+				"project": "auto-test",
 			}
+
+			browserstackHosts := os.Getenv("BROWSERSTACK_HOSTS")
+			browserstackRunLocal := os.Getenv("BROWSERSTACK_RUN_LOCAL")
+			if browserstackRunLocal == "true" {
+				cap["browserstack.tunnel"] = "ture"
+				cap["browserstack.local"] = browserstackRunLocal
+				cap["browserstack.host"] = browserstackHosts
+			}
+
 			cap["os_version"] = osVersion
 			cap["browserName"] = browserName
 			cap["realMobile"] = realMobile
